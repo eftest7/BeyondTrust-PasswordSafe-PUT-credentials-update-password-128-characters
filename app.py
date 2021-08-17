@@ -8,8 +8,8 @@ import string
 urllib3.disable_warnings()
 
 #bi server and header info
-BIServer = "bi22.ef.lab"
-BaseURL="https://bi22.ef.lab/BeyondTrust/api/public/v3"
+BIServer = "bi.ef.lab"
+BaseURL="https://bi.ef.lab/BeyondTrust/api/public/v3"
 auth_head='PS-Auth key={}; runas={};'.format(config.APIKey,config.biUsername)
 header = {'Authorization': auth_head}
 DataType={'Content-type':'application/json'}
