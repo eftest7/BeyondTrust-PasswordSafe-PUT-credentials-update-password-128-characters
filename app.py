@@ -1,19 +1,15 @@
 import config
-import sys
-import os
-import json
-import sys
 import requests
-import getpass
-import pprint
 import urllib3
+import random
+import string
 
 #disable https warnings
 urllib3.disable_warnings()
 
 #bi server and header info
-BIServer = "bi server name here"
-BaseURL="https://bi server name here/BeyondTrust/api/public/v3"
+BIServer = "bi22.ef.lab"
+BaseURL="https://bi22.ef.lab/BeyondTrust/api/public/v3"
 auth_head='PS-Auth key={}; runas={};'.format(config.APIKey,config.biUsername)
 header = {'Authorization': auth_head}
 DataType={'Content-type':'application/json'}
@@ -29,7 +25,28 @@ assetname = "DC112"
 manacct = "apiadmin"
 #domainname = "ef.lab"
 
-#get hostname and instance name from managed system list
+### - Password Generation
+#input the length of password
+#length = int(input('\nEnter the length of password: '))                      
+#define data
+lower = string.ascii_lowercase
+upper = string.ascii_uppercase
+num = string.digits
+#symbols = string.punctuation
+#string.ascii_letters
+
+#combine the data
+all = lower + upper + num
+
+#use random generated password with 24 characters
+temp = random.sample(all,24)
+
+#create the password 
+genpassword = "".join(temp)
+
+#print the password
+print(genpassword)
+
 #get hostname and instance name from managed system list
 urlMansys = BaseURL + '/ManagedSystems'
 mansyslist = session.get(urlMansys,verify=False)
@@ -59,7 +76,7 @@ for asset in mansysjson:
                 urlcredupdate = BaseURL + '/ManagedAccounts/{}/Credentials'.format(accountID)
                 #print(urlcredupdate)
                 req = {
-                    'Password': "ASDFasdf!234!@#$",
+                    'Password': genpassword,
                     'PublicKey': config.APIKey,
                     'UpdateSystem': 'false'
                     }
@@ -69,7 +86,7 @@ for asset in mansysjson:
 
                 #if statement to return status code 204 for success
                 if reqnum.status_code == 204:
-                    print("Success! The password was updated")
+                    print("Success! The password was updated to the generated password")
                 else:
                     print("Error: Please check the request config")
         break
