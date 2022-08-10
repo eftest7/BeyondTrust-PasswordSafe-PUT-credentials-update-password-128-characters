@@ -8,8 +8,8 @@ import string
 urllib3.disable_warnings()
 
 #bi server and header info
-BIServer = "bi.ef.lab"
-BaseURL="https://bi.ef.lab/BeyondTrust/api/public/v3"
+BIServer = "zhj3z7is.ps.beyondtrustcloud.com"
+BaseURL="https://zhj3z7is.ps.beyondtrustcloud.com/BeyondTrust/api/public/v3"
 auth_head='PS-Auth key={}; runas={};'.format(config.APIKey,config.biUsername)
 header = {'Authorization': auth_head}
 DataType={'Content-type':'application/json'}
@@ -21,31 +21,36 @@ url=BaseURL + '/Auth/SignAppin'
 session.post(url=url,verify=False)
 
 #asset and account information to PUT password for
-assetname = "DC112"
-manacct = "apiadmin"
+assetname = "ef-api-test-system01"
+manacct = "ef-api-test-account01"
 #domainname = "ef.lab"
 
 ### - Password Generation
-#input the length of password
-#length = int(input('\nEnter the length of password: '))                      
-#define data
-lower = string.ascii_lowercase
-upper = string.ascii_uppercase
-num = string.digits
-#symbols = string.punctuation
-#string.ascii_letters
 
-#combine the data
-all = lower + upper + num
+## characters to generate password from
+characters = list(string.ascii_letters + string.digits)
 
-#use random generated password with 24 characters
-temp = random.sample(all,24)
+#def generate_random_password():
+## length of password from the user
+length = 128
 
-#create the password 
-genpassword = "".join(temp)
+## shuffling the characters
+random.shuffle(characters)
 
-#print the password
+## picking random characters from the list
+password = []
+for i in range(length):
+    password.append(random.choice(characters))
+
+## shuffling the resultant password
+random.shuffle(password)
+
+## converting the list to string
+## printing the list
+genpassword=("".join(password))
 print(genpassword)
+
+#####PasswordSafe PUT Password Section below
 
 #get hostname and instance name from managed system list
 urlMansys = BaseURL + '/ManagedSystems'
